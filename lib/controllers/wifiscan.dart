@@ -1,39 +1,23 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
 class WiFiScan {
   Future<dynamic> getSSID() async {
-    String data;
     http.Response response = await http.get("http://192.168.33.1/wifiscan/");
+    String data;
     if (response.statusCode == 200) {
-      http.get("http://192.168.33.1/wifiscan/").then((response) {
-        handleDataFromSSIDScan(response);
-        data = response.body;
-        print(jsonDecode(data));
-      });
-
       while (jsonDecode(response.body)["wifiscan"] != "done") {
-        Future.delayed(Duration(milliseconds: 500));
+        Timer(Duration(milliseconds: 300), () {});
         response = await http.get("http://192.168.33.1/wifiscan/");
+        //print(jsonDecode(response.body));
       }
+      data = response.body;
       print(jsonDecode(data)["results"]);
-      return jsonDecode(data);
+      return jsonDecode(data)["results"];
     } else {
       print(response.statusCode);
-    }
-  }
-
-  Future<dynamic> handleDataFromSSIDScan(var response) async {
-    if (jsonDecode(response.body)["wifiscan"] != "done") {
-      Future.delayed(Duration(milliseconds: 500), () {
-        http.get("http://192.168.33.1/wifiscan/").then((response) {
-          handleDataFromSSIDScan(response);
-        });
-      });
-    } else {
-      response = await http.get("http://192.168.33.1/wifiscan/");
-      return response;
     }
   }
 }

@@ -30,7 +30,7 @@ class _ConfigSwitchPageState extends State<ConfigSwitchPage> {
             Text("Step 3: Click on Scan to view a list of available SSID's."),
             Text(
                 "Step 4: Click on the SSID you would like to join and join the device."),
-            FlatButton(
+            TextButton(
               onPressed: () async {
                 var ssidData = await _wiFiScan.getSSID();
                 //var stop = 0;
