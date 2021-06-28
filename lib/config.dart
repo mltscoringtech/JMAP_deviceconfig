@@ -33,6 +33,7 @@ class _ConfigSwitchPageState extends State<ConfigSwitchPage> {
             FlatButton(
               onPressed: () async {
                 var ssidData = await _wiFiScan.getSSID();
+                //var stop = 0;
               },
               child: Text("Search for SSID"),
             ),
