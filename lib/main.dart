@@ -1,4 +1,4 @@
-import 'package:JMAP_deviceconfig/config.dart';
+import 'package:JMAP_deviceconfig/deviceconfig.dart';
 import 'package:JMAP_deviceconfig/manage.dart';
 import 'package:JMAP_deviceconfig/routes/routes.dart';
 import 'package:JMAP_deviceconfig/widgets/navdrawer.dart';
@@ -29,12 +29,15 @@ class MyApp extends StatelessWidget {
         // text styling for headlines, titles, bodies of text, and more.
         textTheme: TextTheme(
           headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+          caption: TextStyle(fontSize: 22),
+          bodyText2: TextStyle(fontSize: 22),
+          bodyText1: TextStyle(fontSize: 22),
         ),
       ),
       home: HomeScreen(),
       routes: {
         Routes.manage: (context) => ManageDevicePage(),
-        Routes.config: (context) => ConfigSwitchPage(),
+        Routes.config: (context) => DeviceConfigPage(),
       },
     );
   }
@@ -54,13 +57,11 @@ class HomeScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FlatButton(
-            onPressed: () =>
-                Navigator.pushReplacementNamed(context, Routes.manage),
+            onPressed: () => Navigator.pushReplacementNamed(context, Routes.manage),
             child: Text("Manage Devices"),
           ),
           FlatButton(
-            onPressed: () =>
-                Navigator.pushReplacementNamed(context, Routes.config),
+            onPressed: () => Navigator.pushReplacementNamed(context, Routes.config),
             child: Text("Configure Switch"),
           )
         ],
