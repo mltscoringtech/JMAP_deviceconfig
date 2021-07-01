@@ -3,8 +3,6 @@ import 'package:JMAP_deviceconfig/widgets/navdrawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-var ssidData;
-
 class DeviceConfigPage extends StatefulWidget {
   const DeviceConfigPage({Key key}) : super(key: key);
   static const String routeName = '/config';
@@ -13,8 +11,20 @@ class DeviceConfigPage extends StatefulWidget {
   _DeviceConfigPageState createState() => _DeviceConfigPageState();
 }
 
-class _DeviceConfigPageState extends State<DeviceConfigPage> {
-  WiFiScanGetData _wiFiScan = WiFiScanGetData();
+class _DeviceConfigPageState extends State<DeviceConfigPage> with TickerProviderStateMixin {
+  Future<List<WiFiScan>> ssidData;
+  List<WiFiScan> ssidList = [];
+  int _state = 0;
+  double _width = 240;
+  GlobalKey _globalKey = GlobalKey();
+
+  void updateUI(data) {
+    setState(() {
+      var stop = 0;
+      ssidList = data;
+      ssidList.sort((b, a) => a.rssi.compareTo(b.rssi));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,28 +54,18 @@ class _DeviceConfigPageState extends State<DeviceConfigPage> {
               leading: Icon(Icons.adjust_sharp),
               title: Text("Step 4: Select the SSID to join."),
             ),
-            Center(child: ProgressButton()),
-            Text("ssidData: ${ssidData ?? "None"} "),
+            Center(child: progressButton()),
+            Flexible(
+              child: Container(
+                child: wifiScanList(),
+                padding: EdgeInsets.all(24),
+              ),
+            ),
           ],
         ));
   }
-}
 
-class ProgressButton extends StatefulWidget {
-  const ProgressButton({Key key}) : super(key: key);
-
-  @override
-  _ProgressButtonState createState() => _ProgressButtonState();
-}
-
-class _ProgressButtonState extends State<ProgressButton> with TickerProviderStateMixin {
-  WiFiScanGetData _wiFiScan = WiFiScanGetData();
-  int _state = 0;
-  double _width = 240;
-  GlobalKey _globalKey = GlobalKey();
-
-  @override
-  Widget build(BuildContext context) {
+  Widget progressButton() {
     return Container(
       key: _globalKey,
       width: _width,
@@ -74,16 +74,59 @@ class _ProgressButtonState extends State<ProgressButton> with TickerProviderStat
         style: raisedButtonStyle,
         onPressed: () async {
           setState(() {
+            ssidList = [];
             animateButton();
           });
-          ssidData = await _wiFiScan.getSSID().then((value) {
+          await fetchWiFiScan().then((data) {
             setState(() {
               animateButton();
-              ssidData = value;
             });
+            updateUI(data);
           });
         },
         child: searchButtonContent(),
+      ),
+    );
+  }
+
+  Widget searchButtonContent() {
+    if (_state == 0) {
+      return Text("Scan for SSID's");
+    } else {
+      return CircularProgressIndicator(
+        value: null,
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+      );
+    }
+  }
+
+  Widget wifiScanList() {
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      itemCount: ssidList.length,
+      itemBuilder: (context, index) {
+        return ssidItemCard(index);
+      },
+    );
+  }
+
+  Widget ssidItemCard(int index) {
+    return Card(
+      elevation: 8,
+      child: Container(
+        height: 56,
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("${ssidList[index].ssid}"),
+              SizedBox(width: 24),
+              Icon((ssidList[index].auth == 0) ? Icons.signal_wifi_4_bar : Icons.signal_wifi_4_bar_lock_sharp),
+              SizedBox(width: 12),
+              Text(ssidList[index].rssi.toString()),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -101,17 +144,6 @@ class _ProgressButtonState extends State<ProgressButton> with TickerProviderStat
     setState(() {
       _state = (_state == 0) ? 1 : 0;
     });
-  }
-
-  Widget searchButtonContent() {
-    if (_state == 0) {
-      return Text("Scan for SSID's");
-    } else {
-      return CircularProgressIndicator(
-        value: null,
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-      );
-    }
   }
 
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
