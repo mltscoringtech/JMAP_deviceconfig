@@ -33,35 +33,59 @@ class _DeviceConfigPageState extends State<DeviceConfigPage> with TickerProvider
           title: Text("Configure Switch"),
         ),
         drawer: NavDrawer(),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 24),
-            new ListTile(
-              leading: Icon(Icons.adjust_sharp),
-              title: Text("Step 1: Reset Switch to turn on management access point."),
-            ),
-            new ListTile(
-              leading: Icon(Icons.adjust_sharp),
-              title: Text("Step 2: Connect this device to the switch access point (shellyswitch25-xxxxxxxxx)."),
-            ),
-            new ListTile(
-              leading: Icon(Icons.adjust_sharp),
-              title: Text("Step 3: Click on Scan to view a list of available SSID's."),
-            ),
-            new ListTile(
-              leading: Icon(Icons.adjust_sharp),
-              title: Text("Step 4: Select the SSID to join."),
-            ),
-            Center(child: progressButton()),
-            Flexible(
-              child: Container(
-                child: wifiScanList(),
-                padding: EdgeInsets.all(24),
+        body: Container(
+          padding: const EdgeInsets.all(16.0),
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 24),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.adjust_sharp),
+                  SizedBox(width: 16),
+                  Expanded(child: Text("Step 1: Reset Switch to turn on Access Point")),
+                ],
               ),
-            ),
-          ],
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.adjust_sharp),
+                  SizedBox(width: 16),
+                  Expanded(child: Text("Step 2: Connect to (shellyswitch25-xxxxx).")),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.adjust_sharp),
+                  SizedBox(width: 16),
+                  Expanded(child: Text("Step 3: Click on Scan to view available SSID's.")),
+                ],
+              ),
+              Center(
+                  child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: progressButton(),
+              )),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.adjust_sharp),
+                  SizedBox(width: 16),
+                  Expanded(child: Text("Step 4: Select the SSID to join:")),
+                ],
+              ),
+              Flexible(
+                child: Container(
+                  child: wifiScanList(),
+                  padding: EdgeInsets.all(24),
+                ),
+              ),
+            ],
+          ),
         ));
   }
 
