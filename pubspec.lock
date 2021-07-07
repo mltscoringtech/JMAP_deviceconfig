@@ -177,6 +177,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  wifi:
+    dependency: "direct main"
+    description:
+      path: "../wifi"
+      relative: true
+    source: path
+    version: "0.1.5"
+  wifi_iot:
+    dependency: "direct main"
+    description:
+      name: wifi_iot
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.3"
 sdks:
   dart: ">=2.12.0 <3.0.0"
   flutter: ">=2.0.0"

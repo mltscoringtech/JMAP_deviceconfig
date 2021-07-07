@@ -2,6 +2,7 @@ import 'package:JMAP_deviceconfig/controllers/wifiscan.dart';
 import 'package:JMAP_deviceconfig/widgets/navdrawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wifi_iot/wifi_iot.dart';
 
 class DeviceConfigPage extends StatefulWidget {
   const DeviceConfigPage({Key key}) : super(key: key);
@@ -137,22 +138,39 @@ class _DeviceConfigPageState extends State<DeviceConfigPage> with TickerProvider
   Widget ssidItemCard(int index) {
     return Card(
       elevation: 8,
-      child: Container(
-        height: 56,
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("${ssidList[index].ssid}"),
-              SizedBox(width: 24),
-              Icon((ssidList[index].auth == 0) ? Icons.signal_wifi_4_bar : Icons.signal_wifi_4_bar_lock_sharp),
-              SizedBox(width: 12),
-              Text(ssidList[index].rssi.toString()),
-            ],
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            print("clicked");
+            wifiConnect(ssidList[index].ssid, 'none');
+          });
+        },
+        child: Container(
+          height: 56,
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("${ssidList[index].ssid}"),
+                SizedBox(width: 24),
+                Icon((ssidList[index].auth == 0) ? Icons.signal_wifi_4_bar : Icons.signal_wifi_4_bar_lock_sharp),
+                SizedBox(width: 12),
+                Text(ssidList[index].rssi.toString()),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  wifiConnect(String psSSID, String psKey) async {
+    await WiFiForIoTPlugin.connect(psSSID, password: 'none', joinOnce: true, withInternet: false).then((value) {
+      print(value);
+    });
+
+    //await WiFiForIoTPlugin.setWiFiAPSSID(psSSID);
+    //await WiFiForIoTPlugin.setWiFiAPPreSharedKey(psKey);
   }
 
   void animateButton() {
