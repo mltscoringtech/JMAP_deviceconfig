@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wifi_iot/wifi_iot.dart';
 
+import 'controllers/styles.dart';
+
 class DeviceConfigPage extends StatefulWidget {
-  const DeviceConfigPage({Key key}) : super(key: key);
+  const DeviceConfigPage({Key? key}) : super(key: key);
   static const String routeName = '/config';
 
   @override
@@ -13,7 +15,7 @@ class DeviceConfigPage extends StatefulWidget {
 }
 
 class _DeviceConfigPageState extends State<DeviceConfigPage> with TickerProviderStateMixin {
-  Future<List<WiFiScan>> ssidData;
+  late Future<List<WiFiScan>> ssidData;
   List<WiFiScan> ssidList = [];
   int _state = 0;
   double _width = 240;
@@ -23,7 +25,7 @@ class _DeviceConfigPageState extends State<DeviceConfigPage> with TickerProvider
     setState(() {
       var stop = 0;
       ssidList = data;
-      ssidList.sort((b, a) => a.rssi.compareTo(b.rssi));
+      ssidList.sort((b, a) => a.rssi!.compareTo(b.rssi!));
     });
   }
 
@@ -58,27 +60,11 @@ class _DeviceConfigPageState extends State<DeviceConfigPage> with TickerProvider
                   Expanded(child: Text("Step 2: Connect to (shellyswitch25-xxxxx).")),
                 ],
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(Icons.adjust_sharp),
-                  SizedBox(width: 16),
-                  Expanded(child: Text("Step 3: Click on Scan to view available SSID's.")),
-                ],
-              ),
               Center(
                   child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: progressButton(),
               )),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(Icons.adjust_sharp),
-                  SizedBox(width: 16),
-                  Expanded(child: Text("Step 4: Select the SSID to join:")),
-                ],
-              ),
               Flexible(
                 child: Container(
                   child: wifiScanList(),
@@ -126,13 +112,36 @@ class _DeviceConfigPageState extends State<DeviceConfigPage> with TickerProvider
   }
 
   Widget wifiScanList() {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      itemCount: ssidList.length,
-      itemBuilder: (context, index) {
-        return ssidItemCard(index);
-      },
-    );
+    if (ssidList.length > 0) {
+      return Column(
+        children: [
+          ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: ssidList.length,
+            itemBuilder: (context, index) {
+              return ssidItemCard(index);
+            },
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(Icons.adjust_sharp),
+              SizedBox(width: 16),
+              Expanded(child: Text("Select the SSID to join:")),
+            ],
+          )
+        ],
+      );
+    } else {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.adjust_sharp),
+          SizedBox(width: 16),
+          Expanded(child: Text("Click on Scan to view available SSID's.")),
+        ],
+      );
+    }
   }
 
   Widget ssidItemCard(int index) {
@@ -142,7 +151,7 @@ class _DeviceConfigPageState extends State<DeviceConfigPage> with TickerProvider
         onTap: () {
           setState(() {
             print("clicked");
-            wifiConnect(ssidList[index].ssid, 'none');
+            wifiConnect(ssidList[index].ssid!, 'none');
           });
         },
         child: Container(
@@ -187,11 +196,4 @@ class _DeviceConfigPageState extends State<DeviceConfigPage> with TickerProvider
       _state = (_state == 0) ? 1 : 0;
     });
   }
-
-  final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
-      primary: Colors.red,
-      padding: EdgeInsets.all(0),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(16)),
-      ));
 }

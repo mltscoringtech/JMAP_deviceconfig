@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NavDrawer extends StatelessWidget {
-  const NavDrawer({Key key}) : super(key: key);
+  const NavDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +21,11 @@ class NavDrawer extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w500),
               ),
             ),
+          ),
+          _createDrawerItem(
+            icon: Icons.device_unknown_sharp,
+            text: 'Home',
+            onTap: () => Navigator.pushReplacementNamed(context, Routes.home),
           ),
           _createDrawerItem(
             icon: Icons.device_unknown_sharp,
@@ -44,11 +49,14 @@ Widget _createHeader() {
       margin: EdgeInsets.zero,
       padding: EdgeInsets.zero,
       child: Stack(children: [
-        Positioned(bottom: 18.0, left: 6.0, child: Text("JMAP Device Configurator", style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w500))),
+        Positioned(
+            bottom: 18.0,
+            left: 6.0,
+            child: Text("JMAP Device Configurator", style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w500))),
       ]));
 }
 
-Widget _createDrawerItem({IconData icon, String text, GestureTapCallback onTap}) {
+Widget _createDrawerItem({required IconData icon, required String text, required GestureTapCallback onTap}) {
   return ListTile(
     title: Row(
       children: <Widget>[

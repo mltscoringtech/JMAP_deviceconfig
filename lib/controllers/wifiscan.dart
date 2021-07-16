@@ -4,11 +4,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class WiFiScan {
-  final String ssid;
-  final int auth;
-  final int channel;
-  final String bssid;
-  final int rssi;
+  final String? ssid;
+  final int? auth;
+  final int? channel;
+  final String? bssid;
+  final int? rssi;
   WiFiScan({this.ssid, this.auth, this.channel, this.bssid, this.rssi});
 
   factory WiFiScan.fromJson(Map<String, dynamic> parsedJson) {
