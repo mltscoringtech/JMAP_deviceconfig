@@ -262,58 +262,27 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void triggerStartLight() async {
-    if (_use12v == true && _use110v == true) {
-      http.Response response1 = await http.get("http://192.168.8.21/settings/");
-      http.Response response2 = await http.get("http://192.168.8.25/settings/");
-      print("${jsonDecode(response1.body)["unixtime"]} - ${jsonDecode(response2.body)["unixtime"]}");
-    }
-    if (_use12v == true) {
-      http.post("http://192.168.8.21/relay/0?turn=on&timer=$_startSignalTime");
-    }
-    if (_use110v == true) {
-      http.post("http://192.168.8.25/relay/0?turn=on&timer=$_startSignalTime");
-    }
+    http.Response response1 = await http.get(Uri.http('192.168.8.21', '/settings/'));
+    print("${jsonDecode(response1.body)["unixtime"]} ");
+    http.post(Uri.http('192.168.8.21', '/relay/0?turn=on&timer=$_startSignalTime'));
   }
 
   void triggerStopLight() async {
-    if (_use12v == true && _use110v == true) {
-      http.Response response1 = await http.get("http://192.168.8.21/settings/");
-      http.Response response2 = await http.get("http://192.168.8.25/settings/");
-      print("${jsonDecode(response1.body)["unixtime"]} - ${jsonDecode(response2.body)["unixtime"]}");
-    }
-    if (_use12v == true) {
-      http.post("http://192.168.8.21/relay/0?turn=on&timer=$_startSignalTime");
-    }
-    if (_use110v == true) {
-      http.post("http://192.168.8.25/relay/1?turn=on&timer=$_startSignalTime");
-    }
+    http.Response response1 = await http.get(Uri.http('192.168.8.21', '/settings/'));
+    print("${jsonDecode(response1.body)["unixtime"]} ");
+    http.post(Uri.http('192.168.8.21', '/relay/0?turn=on&timer=$_startSignalTime'));
   }
 
   void triggerParTime() async {
     int _parTimeInMilliseconds = (_parSignalTime * 1000).round();
     print(DateTime.now().millisecond);
-    if (_use12v == true && _use110v == true) {
-      http.Response response1 = await http.get("http://192.168.8.21/settings/");
-      http.Response response2 = await http.get("http://192.168.8.25/settings/");
-      print("${jsonDecode(response1.body)["time"]} - ${jsonDecode(response2.body)["time"]}");
-    }
+    http.Response response1 = await http.get(Uri.http('192.168.8.21', '/settings/'));
+    print("${jsonDecode(response1.body)["unixtime"]} ");
     print(DateTime.now().millisecond);
-    if (_use12v == true) {
-      http.post("http://192.168.8.21/relay/0?turn=on");
-    }
-    print(DateTime.now().millisecond);
-    if (_use110v == true) {
-      http.post("http://192.168.8.25/relay/0?turn=on");
-    }
-    print(DateTime.now().millisecond);
+    http.post(Uri.http('192.168.8.21', '/relay/0?turn=on'));
+
     Future.delayed(Duration(milliseconds: _parTimeInMilliseconds), () {
-      if (_use12v == true) {
-        http.post("http://192.168.8.21/relay/0?turn=off");
-      }
-      if (_use110v == true) {
-        http.post("http://192.168.8.25/relay/0?turn=off");
-        http.post("http://192.168.8.25/relay/1?turn=on&timer=$_startSignalTime");
-      }
+      http.post(Uri.http('192.168.8.21', '/relay/0?turn=off'));
     });
     print(DateTime.now().millisecond);
   }

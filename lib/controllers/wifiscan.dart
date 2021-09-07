@@ -29,11 +29,11 @@ List<WiFiScan> parseWiFiScan(String responseBody) {
 
 Future<List<WiFiScan>> fetchWiFiScan() async {
   try {
-    http.Response response = await http.get("http://192.168.33.1/wifiscan/");
+    http.Response response = await http.get(Uri.http('192.168.33.1', '/wifiscan/'));
     if (response.statusCode == 200) {
       while (jsonDecode(response.body)["wifiscan"] != "done") {
         Timer(Duration(milliseconds: 100), () {});
-        response = await http.get("http://192.168.33.1/wifiscan/");
+        response = await http.get(Uri.http('192.168.33.1', '/wifiscan/'));
         //print(jsonDecode(response.body));
       }
       print(jsonDecode(response.body)["results"]);
