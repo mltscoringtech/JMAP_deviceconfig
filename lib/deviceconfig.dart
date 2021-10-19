@@ -1,10 +1,10 @@
-import 'package:JMAP_deviceconfig/controllers/wifiscan.dart';
-import 'package:JMAP_deviceconfig/widgets/navdrawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:wifi_iot/wifi_iot.dart';
+import 'package:jmap_device_config/widgets/navdrawer.dart';
+import 'package:wifi/wifi.dart';
 
 import 'controllers/styles.dart';
+import 'controllers/wifiscan.dart';
 
 class DeviceConfigPage extends StatefulWidget {
   const DeviceConfigPage({Key? key}) : super(key: key);
@@ -17,6 +17,7 @@ class DeviceConfigPage extends StatefulWidget {
 class _DeviceConfigPageState extends State<DeviceConfigPage> with TickerProviderStateMixin {
   late Future<List<WiFiScan>> ssidData;
   List<WiFiScan> ssidList = [];
+  List<WifiResult> deviceList = [];
   int _state = 0;
   double _width = 240;
   GlobalKey _globalKey = GlobalKey();
@@ -49,15 +50,7 @@ class _DeviceConfigPageState extends State<DeviceConfigPage> with TickerProvider
                 children: [
                   Icon(Icons.adjust_sharp),
                   SizedBox(width: 16),
-                  Expanded(child: Text("Step 1: Reset Switch to turn on Access Point")),
-                ],
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(Icons.adjust_sharp),
-                  SizedBox(width: 16),
-                  Expanded(child: Text("Step 2: Connect to (shellyswitch25-xxxxx).")),
+                  Expanded(child: Text("Connect to switch to be configured.")),
                 ],
               ),
               Center(
@@ -102,7 +95,7 @@ class _DeviceConfigPageState extends State<DeviceConfigPage> with TickerProvider
 
   Widget searchButtonContent() {
     if (_state == 0) {
-      return Text("Scan for SSID's");
+      return Text("Scan for JMAP start signal devices.");
     } else {
       return CircularProgressIndicator(
         value: null,
@@ -127,7 +120,7 @@ class _DeviceConfigPageState extends State<DeviceConfigPage> with TickerProvider
             children: [
               Icon(Icons.adjust_sharp),
               SizedBox(width: 16),
-              Expanded(child: Text("Select the SSID to join:")),
+              Expanded(child: Text("Select the Device to configure:")),
             ],
           )
         ],
@@ -138,7 +131,7 @@ class _DeviceConfigPageState extends State<DeviceConfigPage> with TickerProvider
         children: [
           Icon(Icons.adjust_sharp),
           SizedBox(width: 16),
-          Expanded(child: Text("Click on Scan to view available SSID's.")),
+          Expanded(child: Text("Scan to view available Start Signal devices.")),
         ],
       );
     }
@@ -151,7 +144,6 @@ class _DeviceConfigPageState extends State<DeviceConfigPage> with TickerProvider
         onTap: () {
           setState(() {
             print("clicked");
-            wifiConnect(ssidList[index].ssid!, 'none');
           });
         },
         child: Container(
@@ -171,15 +163,6 @@ class _DeviceConfigPageState extends State<DeviceConfigPage> with TickerProvider
         ),
       ),
     );
-  }
-
-  wifiConnect(String psSSID, String psKey) async {
-    await WiFiForIoTPlugin.connect(psSSID, password: 'none', joinOnce: true, withInternet: false).then((value) {
-      print(value);
-    });
-
-    //await WiFiForIoTPlugin.setWiFiAPSSID(psSSID);
-    //await WiFiForIoTPlugin.setWiFiAPPreSharedKey(psKey);
   }
 
   void animateButton() {

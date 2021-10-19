@@ -1,6 +1,6 @@
-import 'package:JMAP_deviceconfig/widgets/navdrawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jmap_device_config/widgets/navdrawer.dart';
 import 'package:ping_discover_network/ping_discover_network.dart';
 
 class ManageDevicePage extends StatelessWidget {

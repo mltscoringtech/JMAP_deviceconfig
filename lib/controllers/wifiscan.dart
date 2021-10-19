@@ -32,11 +32,11 @@ Future<List<WiFiScan>> fetchWiFiScan() async {
     http.Response response = await http.get(Uri.http('192.168.33.1', '/wifiscan/'));
     if (response.statusCode == 200) {
       while (jsonDecode(response.body)["wifiscan"] != "done") {
-        Timer(Duration(milliseconds: 100), () {});
+        Timer(Duration(milliseconds: 50), () {});
         response = await http.get(Uri.http('192.168.33.1', '/wifiscan/'));
         //print(jsonDecode(response.body));
       }
-      print(jsonDecode(response.body)["results"]);
+      //print(jsonDecode(response.body)["results"]);
       return parseWiFiScan(response.body);
     } else {
       //throw Exception('Unable to connect to Device.');

@@ -1,6 +1,6 @@
-import 'package:JMAP_deviceconfig/routes/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jmap_device_config/routes/routes.dart';
 
 class NavDrawer extends StatelessWidget {
   const NavDrawer({Key? key}) : super(key: key);
@@ -35,7 +35,7 @@ class NavDrawer extends StatelessWidget {
           _createDrawerItem(
             icon: Icons.devices_other_sharp,
             text: 'Configure Switch',
-            onTap: () => Navigator.pushReplacementNamed(context, Routes.config),
+            onTap: () => Navigator.pushReplacementNamed(context, Routes.config1),
           ),
           Divider(),
         ],
