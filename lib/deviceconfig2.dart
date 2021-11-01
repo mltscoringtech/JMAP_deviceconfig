@@ -162,12 +162,7 @@ class _DeviceConfigPage2State extends State<DeviceConfigPage2> {
 
     await client.get(Uri.parse(
         "http://192.168.33.1/settings/sta?enabled=true&ssid=${ssidList[index].ssid}&key=87654321&ipv4_method=static&ip=$switchIPNotNull&dns=8.8.8.8&gw=192.168.8.1")); // Enable WiFi
-
-    //await client.get(Uri.parse("http://192.168.33.1/settings/sta?ip=$switchIPNotNull&gw=192.168.8.1&dns=8.8.8.8")); // Fixed IP
-    print("WiFi enabled: true");
-    //await client.get(Uri.parse("http://192.168.33.1/settings/sta?ssid=${ssidList[index].ssid}")); // WiFi SSID
-    //await client.get(Uri.parse("http://192.168.33.1/settings/sta?key=87654321")); // WiFi Password
-    //await client.get(Uri.parse("http://192.168.33.1/settings/sta?ip=$switchIPNotNull&gw=192.168.8.1")); // Fixed IP
+    print("SSID: ${ssidList[index].ssid}");
 
     await wifiConnect(ssidList[index].ssid!, "87654321");
   }

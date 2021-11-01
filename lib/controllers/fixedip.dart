@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 Map<String, String> fixedIPLookup() {
   var fixedIPs = {
     'Device193': '192.168.8.21',
-    'DeviceBBB': '192.168.8.22',
+    'Device17F': '192.168.8.22',
     'DeviceF10': '192.168.8.23',
     'Device9A0': '192.168.8.24',
     'DeviceE2C': '192.168.8.25',

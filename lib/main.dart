@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:dart_ping/dart_ping.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jmap_device_config/manage.dart';
@@ -319,44 +318,37 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void triggerStartLight() async {
-    // Socket.connect('192.168.8.23', 80, timeout: Duration(seconds: 1)).then((socket) {
-    //   print("success");
-    //   print("ping.23: ${DateTime.now().millisecond}");
-    //   socket.destroy();
-    // }).catchError((error) {
-    //   print("Exceptions");
-    // });
+  void triggerStartLight() {
     var client = http.Client();
     print("trigger: ${DateTime.now().millisecond}");
-    final ping23 = Ping('192.168.8.23', count: 1);
-    final ping24 = Ping('192.168.8.24', count: 1);
+    //final ping23 = Ping('192.168.8.21', count: 50);
+    //final ping24 = Ping('192.168.8.22', count: 50);
 
     // [Optional]
     // Preview command that will be run (helpful for debugging)
-    print('Running command: ${ping23.command}');
-    print('Running command: ${ping24.command}');
+    //print('Running command: ${ping23.command}');
+    //print('Running command: ${ping24.command}');
     // Begin ping process and listen for output
-    ping23.stream.listen((event) {
-      print(event);
-    });
-    ping24.stream.listen((event) {
-      print(event);
-    });
+    // ping23.stream.listen((event) {
+    //   print(event);
+    // });
+    // ping24.stream.listen((event) {
+    //   print(event);
+    // });
     try {
       //print(".21: ${DateTime.now().millisecond}");
-      int startTime = DateTime.now().millisecond;
-      http.Response response23 = await http.get(Uri.http('192.168.8.23', '/status/'));
-      print("${jsonDecode(response23.body)["time"]} - ${jsonDecode(response23.body)["unixtime"]}");
-      int endTime = DateTime.now().millisecond;
-      print('start: $startTime - end: $endTime - delay: ${endTime - startTime}');
-      print("----------------------------------");
-      startTime = DateTime.now().millisecond;
-      http.Response response24 = await http.get(Uri.http('192.168.8.24', '/status/'));
-      print("${jsonDecode(response24.body)["time"]} - ${jsonDecode(response24.body)["unixtime"]}");
-      endTime = DateTime.now().millisecond;
-      print('start: $startTime - end: $endTime - delay: ${endTime - startTime}');
-      print("----------------------------------");
+      // int startTime = DateTime.now().millisecond;
+      // http.Response response23 = await http.get(Uri.http('192.168.8.21', '/status/'));
+      // print("${jsonDecode(response23.body)["time"]} - ${jsonDecode(response23.body)["unixtime"]}");
+      // int endTime = DateTime.now().millisecond;
+      // print('start: $startTime - end: $endTime - delay: ${endTime - startTime}');
+      // print("----------------------------------");
+      // startTime = DateTime.now().millisecond;
+      // http.Response response24 = await http.get(Uri.http('192.168.8.22', '/status/'));
+      // print("${jsonDecode(response24.body)["time"]} - ${jsonDecode(response24.body)["unixtime"]}");
+      // endTime = DateTime.now().millisecond;
+      // print('start: $startTime - end: $endTime - delay: ${endTime - startTime}');
+      // print("----------------------------------");
       // print(".23: ${DateTime.now().millisecond}");
       // http.Response response23 = await http.get(Uri.http('192.168.8.23', '/status/'));
       // print(
@@ -364,25 +356,11 @@ class _HomeScreenState extends State<HomeScreen> {
       //
       // print(".23: ${DateTime.now().millisecond}");
 
-      // Socket.connect('192.168.8.23', 80, timeout: Duration(seconds: 1));
-      // Socket.connect('192.168.8.22', 80, timeout: Duration(seconds: 1));
-      // Socket.connect('192.168.8.23', 80, timeout: Duration(seconds: 1)).then((socket) {
-      //   print("ping .23 success: ${DateTime.now().millisecond}");
-      //   socket.destroy();
-      // }).catchError((error) {
-      //   print("Exceptions");
-      // });
-      // Socket.connect('192.168.8.24', 80, timeout: Duration(seconds: 1)).then((socket) {
-      //   print("ping .24 success: ${DateTime.now().millisecond}");
-      //   socket.destroy();
-      // }).catchError((error) {
-      //   print("Exceptions");
-      // });
       print(".before: ${DateTime.now().millisecond}");
-      client.get(Uri.parse("http://192.168.8.23/relay/0?turn=on&timer=$_startSignalTime"));
+      client.get(Uri.parse("http://192.168.8.21/relay/0?turn=on&timer=$_startSignalTime"));
       print(".get.uri.23: ${DateTime.now().millisecond}");
       print(".before: ${DateTime.now().millisecond}");
-      client.get(Uri.parse("http://192.168.8.24/relay/0?turn=on&timer=$_startSignalTime"));
+      client.get(Uri.parse("http://192.168.8.22/relay/0?turn=on&timer=$_startSignalTime"));
       print(".get.uri.24: ${DateTime.now().millisecond}");
     } catch (e) {
       print(e);
