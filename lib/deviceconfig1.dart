@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jmap_device_config/deviceconfig2.dart';
 import 'package:jmap_device_config/widgets/navdrawer.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:wifi_iot/wifi_iot.dart';
 
 import 'controllers/fixedip.dart';
@@ -126,6 +127,7 @@ class _DeviceConfigPage1State extends State<DeviceConfigPage1> {
         onTap: () {
           setState(() {
             print("clicked ${_htResultNetwork[index].ssid}");
+
             wifiConnect(_htResultNetwork[index].ssid!, "87654321");
           });
         },
@@ -147,8 +149,16 @@ class _DeviceConfigPage1State extends State<DeviceConfigPage1> {
   }
 
   wifiConnect(String psSSID, String psKey) async {
+    ProgressDialog pr = ProgressDialog(context);
+    pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+    pr.style(message: 'Connecting to device...');
+    pr.show();
     await WiFiForIoTPlugin.findAndConnect(psSSID, password: psKey, joinOnce: true, withInternet: false).then((value) => {
-          if (value = true) {Navigator.push(context, new MaterialPageRoute(builder: (context) => new DeviceConfigPage2(switchID: psSSID)))}
+          if (value = true)
+            {
+              pr.hide(),
+              Navigator.push(context, new MaterialPageRoute(builder: (context) => new DeviceConfigPage2(switchID: psSSID))),
+            }
         });
   }
 }

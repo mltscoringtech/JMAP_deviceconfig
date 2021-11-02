@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jmap_device_config/routes/routes.dart';
 import 'package:jmap_device_config/widgets/navdrawer.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:wifi_iot/wifi_iot.dart';
 
 import 'controllers/fixedip.dart';
@@ -145,6 +146,10 @@ class _DeviceConfigPage2State extends State<DeviceConfigPage2> {
   }
 
   Future<void> configSwitch(int index) async {
+    ProgressDialog pr = ProgressDialog(context);
+    pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+    pr.style(message: 'Configuring Switch, please wait...');
+    pr.show();
     Map<String, String> fixedIPs = fixedIPLookup();
     String switchID = widget.switchID.substring(widget.switchID.length - 3, widget.switchID.length);
     switchID = 'Device' + switchID;
@@ -168,6 +173,7 @@ class _DeviceConfigPage2State extends State<DeviceConfigPage2> {
     await wifiConnect(ssidList[index].ssid!, "87654321").then((value) => {
           if (value = true)
             {
+              pr.hide(),
               Navigator.pushReplacementNamed(context, Routes.home),
             }
         });
