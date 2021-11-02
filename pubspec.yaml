@@ -15,7 +15,10 @@ dependencies:
   flutter_spinkit: ^5.0.0
   wifi_iot: ^0.3.7
   progress_dialog: ^1.2.4
-  ping_discover_network: ^0.2.0+1
+  ping_discover_network:
+    git:
+      url: git@github.com:truthuntold/ping_discover_network.git
+      ref: 2a80108ddedc513d3ef7e5e38cd4b72df9400359
   cupertino_icons: ^1.0.0
   dart_ping: ^6.1.1
   ntp: ^2.0.0

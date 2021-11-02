@@ -151,7 +151,7 @@ class _DeviceConfigPage1State extends State<DeviceConfigPage1> {
   wifiConnect(String psSSID, String psKey) async {
     ProgressDialog pr = ProgressDialog(context);
     pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
-    pr.style(message: 'Connecting to device...');
+    pr.style(message: 'Connecting to switch, please wait...');
     pr.show();
     await WiFiForIoTPlugin.findAndConnect(psSSID, password: psKey, joinOnce: true, withInternet: false).then((value) => {
           if (value = true)
