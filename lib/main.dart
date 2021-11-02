@@ -355,7 +355,6 @@ class _HomeScreenState extends State<HomeScreen> {
       //     "${jsonDecode(response23.body)["time"]} - ${jsonDecode(response23.body)["unixtime"]} - ${jsonDecode(response23.body)["ram_total"]} - ${jsonDecode(response23.body)["ram_free"]}");
       //
       // print(".23: ${DateTime.now().millisecond}");
-
       print(".before: ${DateTime.now().millisecond}");
       client.get(Uri.parse("http://192.168.8.21/relay/0?turn=on&timer=$_startSignalTime"));
       print(".get.uri.23: ${DateTime.now().millisecond}");
@@ -374,7 +373,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // http.post(Uri.http('192.168.8.21', '/relay/0?turn=on&timer=$_startSignalTime'));
   }
 
-  void triggerParTime() async {
+  Future<void> triggerParTime() async {
     int _parTimeInMilliseconds = (_parSignalTime * 1000).round();
     print(DateTime.now().millisecond);
     http.Response response1 = await http.get(Uri.http('192.168.8.21', '/settings/'));

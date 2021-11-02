@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jmap_device_config/widgets/navdrawer.dart';
-import 'package:wifi/wifi.dart';
 
 import 'controllers/styles.dart';
 import 'controllers/wifiscan.dart';
@@ -17,7 +16,6 @@ class DeviceConfigPage extends StatefulWidget {
 class _DeviceConfigPageState extends State<DeviceConfigPage> with TickerProviderStateMixin {
   late Future<List<WiFiScan>> ssidData;
   List<WiFiScan> ssidList = [];
-  List<WifiResult> deviceList = [];
   int _state = 0;
   double _width = 240;
   GlobalKey _globalKey = GlobalKey();
