@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:jmap_device_config/routes/routes.dart';
 import 'package:jmap_device_config/widgets/navdrawer.dart';
 import 'package:wifi_iot/wifi_iot.dart';
 
@@ -62,7 +63,7 @@ class _DeviceConfigPage2State extends State<DeviceConfigPage2> {
                 children: [
                   Icon(Icons.adjust_sharp),
                   SizedBox(width: 8),
-                  Expanded(child: Text("Select SSID to configure switch.")),
+                  Expanded(child: Text("Select SSID to connect switch.")),
                   refreshButton(),
                 ],
               ),
@@ -164,7 +165,12 @@ class _DeviceConfigPage2State extends State<DeviceConfigPage2> {
         "http://192.168.33.1/settings/sta?enabled=true&ssid=${ssidList[index].ssid}&key=87654321&ipv4_method=static&ip=$switchIPNotNull&dns=8.8.8.8&gw=192.168.8.1")); // Enable WiFi
     print("SSID: ${ssidList[index].ssid}");
 
-    await wifiConnect(ssidList[index].ssid!, "87654321");
+    await wifiConnect(ssidList[index].ssid!, "87654321").then((value) => {
+          if (value = true)
+            {
+              Navigator.pushReplacementNamed(context, Routes.home),
+            }
+        });
   }
 
   Widget refreshButton() {

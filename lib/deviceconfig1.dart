@@ -24,13 +24,18 @@ class _DeviceConfigPage1State extends State<DeviceConfigPage1> {
   @override
   initState() {
     getWifi();
-
     super.initState();
   }
 
   getWifi() async {
     _htResultNetwork = await loadWifiList();
     setState(() {});
+  }
+
+  Future<List<WifiNetwork>> loadWifiList() async {
+    List<WifiNetwork> htResultNetwork = [];
+    htResultNetwork = await WiFiForIoTPlugin.loadWifiList();
+    return htResultNetwork.where((element) => element.ssid!.startsWith('shelly')).toList();
   }
 
   @override
@@ -84,12 +89,6 @@ class _DeviceConfigPage1State extends State<DeviceConfigPage1> {
         child: Icon(Icons.refresh_sharp),
       ),
     );
-  }
-
-  Future<List<WifiNetwork>> loadWifiList() async {
-    List<WifiNetwork> htResultNetwork = [];
-    htResultNetwork = await WiFiForIoTPlugin.loadWifiList();
-    return htResultNetwork.where((element) => element.ssid!.startsWith('shelly')).toList();
   }
 
   Widget wifiScanList() {
