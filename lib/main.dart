@@ -381,7 +381,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       for (String vskip in connectedVSKIPs) {
         client.get(Uri.parse("http://$vskip/relay/0?turn=on"));
-        Future.delayed(Duration(milliseconds: 300)).then((value) {
+        Future.delayed(Duration(milliseconds: 1300)).then((value) {
           client.get(Uri.parse("http://$vskip/relay/0?turn=off"));
         });
       }
