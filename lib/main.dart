@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jmap_device_config/manage.dart';
 import 'package:jmap_device_config/routes/routes.dart';
 import 'package:jmap_device_config/widgets/navdrawer.dart';
+import 'package:ping_discover_network/ping_discover_network.dart';
 
+import 'controllers/fixedip.dart';
 import 'controllers/styles.dart';
 import 'deviceconfig.dart';
 import 'deviceconfig1.dart';
@@ -18,6 +19,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -56,15 +58,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<String> connectedVSKIPs = [];
   double _startSignalTime = 1.50;
   double _startDelayTime = 2;
   double _parSignalTime = 8;
   bool _startStopIsTiming = false;
-  int _intCount = 0;
 
   final _startSignalTimeTextController = TextEditingController()..text = "1.50";
   final _startDelayTextController = TextEditingController()..text = "2.00";
   @override
+  initState() {
+    pingDiscoverNetwork();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -241,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Slider(
                       value: _startSignalTime,
                       label: _startSignalTime.toString(),
-                      min: 1,
+                      min: 0,
                       max: 5,
                       onChanged: (double newSliderValue) {
                         setState(() {
@@ -278,7 +285,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Slider(
                       value: _startDelayTime,
                       label: _startDelayTime.toString(),
-                      min: 1,
+                      min: 0,
                       max: 10,
                       onChanged: (double newSliderValue) {
                         setState(() {
@@ -371,32 +378,29 @@ class _HomeScreenState extends State<HomeScreen> {
       //     "${jsonDecode(response23.body)["time"]} - ${jsonDecode(response23.body)["unixtime"]} - ${jsonDecode(response23.body)["ram_total"]} - ${jsonDecode(response23.body)["ram_free"]}");
       //
       // print(".23: ${DateTime.now().millisecond}");
-      Socket.connect('192.168.8.21', 80, timeout: Duration(milliseconds: 500)).then((socket) {
-        client.get(Uri.parse("http://192.168.8.21/relay/0?turn=on&timer=$_startSignalTime"));
-      }).catchError((error) {});
-      Socket.connect('192.168.8.22', 80, timeout: Duration(milliseconds: 500)).then((socket) {
-        client.get(Uri.parse("http://192.168.8.22/relay/0?turn=on&timer=$_startSignalTime"));
-      }).catchError((error) {});
-      Socket.connect('192.168.8.23', 80, timeout: Duration(milliseconds: 500)).then((socket) {
-        client.get(Uri.parse("http://192.168.8.23/relay/0?turn=on&timer=$_startSignalTime"));
-      }).catchError((error) {});
-      Socket.connect('192.168.8.24', 80, timeout: Duration(milliseconds: 500)).then((socket) {
-        client.get(Uri.parse("http://192.168.8.24/relay/0?turn=on&timer=$_startSignalTime"));
-      }).catchError((error) {});
-      Socket.connect('192.168.8.25', 80, timeout: Duration(milliseconds: 500)).then((socket) {
-        client.get(Uri.parse("http://192.168.8.25/relay/0?turn=on&timer=$_startSignalTime"));
-      }).catchError((error) {});
-      Socket.connect('192.168.8.26', 80, timeout: Duration(milliseconds: 500)).then((socket) {
-        client.get(Uri.parse("http://192.168.8.26/relay/0?turn=on&timer=$_startSignalTime"));
-      }).catchError((error) {});
-      Socket.connect('192.168.8.27', 80, timeout: Duration(milliseconds: 500)).then((socket) {
-        client.get(Uri.parse("http://192.168.8.27/relay/0?turn=on&timer=$_startSignalTime"));
-      }).catchError((error) {});
-      // client.get(Uri.parse("http://192.168.8.23/relay/0?turn=on&timer=$_startSignalTime"));
-      // client.get(Uri.parse("http://192.168.8.24/relay/0?turn=on&timer=$_startSignalTime"));
-      // client.get(Uri.parse("http://192.168.8.25/relay/0?turn=on&timer=$_startSignalTime"));
-      // client.get(Uri.parse("http://192.168.8.26/relay/0?turn=on&timer=$_startSignalTime"));
-      // client.get(Uri.parse("http://192.168.8.27/relay/0?turn=on&timer=$_startSignalTime"));
+
+      for (String vskip in connectedVSKIPs) {
+        client.get(Uri.parse("http://$vskip/relay/0?turn=on"));
+        Future.delayed(Duration(milliseconds: 300)).then((value) {
+          client.get(Uri.parse("http://$vskip/relay/0?turn=off"));
+        });
+      }
+
+      // Socket.connect('192.168.8.23', 80, timeout: Duration(milliseconds: 500)).then((socket) {
+      //   client.get(Uri.parse("http://192.168.8.23/relay/0?turn=on&timer=$_startSignalTime"));
+      // }).catchError((error) {});
+      // Socket.connect('192.168.8.24', 80, timeout: Duration(milliseconds: 500)).then((socket) {
+      //   client.get(Uri.parse("http://192.168.8.24/relay/0?turn=on&timer=$_startSignalTime"));
+      // }).catchError((error) {});
+      // Socket.connect('192.168.8.25', 80, timeout: Duration(milliseconds: 500)).then((socket) {
+      //   client.get(Uri.parse("http://192.168.8.25/relay/0?turn=on&timer=$_startSignalTime"));
+      // }).catchError((error) {});
+      // Socket.connect('192.168.8.26', 80, timeout: Duration(milliseconds: 500)).then((socket) {
+      //   client.get(Uri.parse("http://192.168.8.26/relay/0?turn=on&timer=$_startSignalTime"));
+      // }).catchError((error) {});
+      // Socket.connect('192.168.8.27', 80, timeout: Duration(milliseconds: 500)).then((socket) {
+      //   client.get(Uri.parse("http://192.168.8.27/relay/0?turn=on&timer=$_startSignalTime"));
+      // }).catchError((error) {});
     } catch (e) {
       print(e);
     }
@@ -421,6 +425,16 @@ class _HomeScreenState extends State<HomeScreen> {
       http.post(Uri.http('192.168.8.21', '/relay/0?turn=off'));
     });
     print(DateTime.now().millisecond);
+  }
+
+  void pingDiscoverNetwork() async {
+    Map<String, String> fixedIPs = fixedIPLookup();
+    final stream = NetworkAnalyzer.discover2('192.168.8', 80, timeout: Duration(milliseconds: 500));
+    stream.listen((NetworkAddress addr) {
+      if ((addr.exists) && (fixedIPs.containsValue(addr.ip))) {
+        connectedVSKIPs.add(addr.ip);
+      }
+    });
   }
 }
 

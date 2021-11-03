@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:jmap_device_config/widgets/navdrawer.dart';
 import 'package:ping_discover_network/ping_discover_network.dart';
 
+import 'controllers/fixedip.dart';
+
 class ManageDevicePage extends StatelessWidget {
   const ManageDevicePage({Key? key}) : super(key: key);
   static const String routeName = '/manage';
@@ -26,20 +28,28 @@ class ManageDevicePage extends StatelessWidget {
 void pingDiscoverNetwork() async {
   // NetworkAnalyzer.discover pings PORT:IP one by one according to timeout.
   // NetworkAnalyzer.discover2 pings all PORT:IP addresses at once.
+  Map<String, String> fixedIPs = fixedIPLookup();
+  List<String> connectedVSKIPs = [];
 
-  const port = 80;
   final stream = NetworkAnalyzer.discover2(
     '192.168.8',
-    port,
-    timeout: Duration(milliseconds: 5000),
+    80,
+    timeout: Duration(milliseconds: 500),
   );
 
   int found = 0;
   stream.listen((NetworkAddress addr) {
-    print('${addr.ip}:$port');
-    if (addr.exists) {
+    if ((addr.exists) && (fixedIPs.containsValue(addr.ip))) {
+      connectedVSKIPs.add(addr.ip);
       found++;
-      print('Found device: ${addr.ip}:$port');
+      print('Found device: ${addr.ip}');
     }
-  }).onDone(() => print('Finish. Found $found device(s)'));
+  }).onDone(() {
+    print('Finish. Found $found device(s)');
+
+    print(connectedVSKIPs.length);
+    for (String vskip in connectedVSKIPs) {
+      print('ip in list: $vskip');
+    }
+  });
 }
