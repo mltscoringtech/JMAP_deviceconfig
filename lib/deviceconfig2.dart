@@ -174,6 +174,7 @@ class _DeviceConfigPage2State extends State<DeviceConfigPage2> {
           if (value = true)
             {
               pr.hide(),
+              Navigator.of(context).popUntil((route) => route.isFirst),
               Navigator.pushReplacementNamed(context, Routes.home),
             }
         });
