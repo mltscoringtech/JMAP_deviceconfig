@@ -7,6 +7,7 @@ import 'package:jmap_device_config/manage.dart';
 import 'package:jmap_device_config/routes/routes.dart';
 import 'package:jmap_device_config/widgets/navdrawer.dart';
 import 'package:ping_discover_network/ping_discover_network.dart';
+import 'package:wifi_iot/wifi_iot.dart';
 
 import 'controllers/fixedip.dart';
 import 'controllers/styles.dart';
@@ -428,13 +429,21 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void pingDiscoverNetwork() async {
-    Map<String, String> fixedIPs = fixedIPLookup();
-    final stream = NetworkAnalyzer.discover2('192.168.8', 80, timeout: Duration(milliseconds: 500));
-    stream.listen((NetworkAddress addr) {
-      if ((addr.exists) && (fixedIPs.containsValue(addr.ip))) {
-        connectedVSKIPs.add(addr.ip);
+    connectedVSKIPs.clear();
+    await WiFiForIoTPlugin.getSSID().then((value) {
+      if (value!.startsWith('shelly')) {
+        connectedVSKIPs.add('192.168.33.1');
+      } else {
+        Map<String, String> fixedIPs = fixedIPLookup();
+        final stream8 = NetworkAnalyzer.discover2('192.168.8', 80, timeout: Duration(milliseconds: 500));
+        stream8.listen((NetworkAddress addr) {
+          if ((addr.exists) && (fixedIPs.containsValue(addr.ip))) {
+            connectedVSKIPs.add(addr.ip);
+          }
+        });
       }
     });
+    print(connectedVSKIPs.length);
   }
 }
 
