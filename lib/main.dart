@@ -431,6 +431,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void pingDiscoverNetwork() async {
     connectedVSKIPs.clear();
     await WiFiForIoTPlugin.getSSID().then((value) {
+      print(value);
       if (value!.startsWith('shelly')) {
         connectedVSKIPs.add('192.168.33.1');
       } else {

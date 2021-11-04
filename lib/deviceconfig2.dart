@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -151,23 +149,25 @@ class _DeviceConfigPage2State extends State<DeviceConfigPage2> {
     pr.style(message: 'Configuring Switch, please wait...');
     pr.show();
     Map<String, String> fixedIPs = fixedIPLookup();
-    String switchID = widget.switchID.substring(widget.switchID.length - 3, widget.switchID.length);
-    switchID = 'Device' + switchID;
-    String switchIPNotNull = fixedIPs[switchID] ?? '192.168.33.1';
-
-    http.Response response22 = await http.get(Uri.http('192.168.33.1', '/settings'));
-    print("${jsonDecode(response22.body)}");
+    String switchName = widget.switchID.substring(widget.switchID.length - 3, widget.switchID.length);
+    switchName = 'Device' + switchName;
+    String switchIPNotNull = fixedIPs[switchName] ?? '192.168.33.1';
 
     var client = http.Client();
-    await client.get(Uri.parse("http://192.168.33.1/settings?name=$switchID"));
-    print("SwitchID: $switchID");
+    await client.get(Uri.parse("http://192.168.33.1/settings?name=$switchName"));
+    print("SwitchID: $switchName");
     await client.get(Uri.parse("http://192.168.33.1/settings?sntp_server=192.168.8.1"));
     print("sntp_server: 192.168.8.1");
     await client.get(Uri.parse("http://192.168.33.1/settings/relay/0?default_state=off")); // Power On Default
     print("RelayDefault: off");
-
-    await client.get(Uri.parse(
-        "http://192.168.33.1/settings/sta?enabled=true&ssid=${ssidList[index].ssid}&key=87654321&ipv4_method=static&ip=$switchIPNotNull&dns=8.8.8.8&gw=192.168.8.1")); // Enable WiFi
+    String configURL = "http://192.168.33.1/settings/sta?enabled=true&ssid=${ssidList[index].ssid}";
+    if (ssidList[index].auth! > 0) {
+      configURL += '&key=87654321';
+    }
+    configURL += '&ipv4_method=static&ip=$switchIPNotNull&dns=8.8.8.8&gw=192.168.8.1';
+    print(configURL);
+    //await client.get(Uri.parse("http://192.168.33.1/settings/sta?enabled=true&ssid=${ssidList[index].ssid}&key=87654321&ipv4_method=static&ip=$switchIPNotNull&dns=8.8.8.8&gw=192.168.8.1")); // Enable WiFi
+    await client.get(Uri.parse(configURL)); // Enable WiFi
     print("SSID: ${ssidList[index].ssid}");
 
     await wifiConnect(ssidList[index].ssid!, "87654321").then((value) => {

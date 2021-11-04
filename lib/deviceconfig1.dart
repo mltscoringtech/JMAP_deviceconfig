@@ -127,7 +127,6 @@ class _DeviceConfigPage1State extends State<DeviceConfigPage1> {
         onTap: () {
           setState(() {
             print("clicked ${_htResultNetwork[index].ssid}");
-
             wifiConnect(_htResultNetwork[index].ssid!, "87654321");
           });
         },
