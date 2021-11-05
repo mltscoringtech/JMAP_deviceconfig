@@ -6,8 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:jmap_device_config/manage.dart';
 import 'package:jmap_device_config/routes/routes.dart';
 import 'package:jmap_device_config/widgets/navdrawer.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 import 'package:ping_discover_network/ping_discover_network.dart';
-import 'package:wifi_iot/wifi_iot.dart';
 
 import 'controllers/fixedip.dart';
 import 'controllers/styles.dart';
@@ -430,8 +430,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void pingDiscoverNetwork() async {
     connectedVSKIPs.clear();
-    await WiFiForIoTPlugin.getSSID().then((value) {
-      print(value);
+
+    await NetworkInfo().getWifiName().then((value) {
+      print('GetWiFiName: $value');
       if (value!.startsWith('shelly')) {
         connectedVSKIPs.add('192.168.33.1');
       } else {
@@ -446,6 +447,13 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
   }
+}
+
+Future<String?> _updateWifiName() async {
+  String? _wifiName;
+  _wifiName = await (NetworkInfo().getWifiName());
+  print("JmapWifi wifiName: $_wifiName");
+  return _wifiName;
 }
 
 class LabeledCheckbox extends StatelessWidget {
