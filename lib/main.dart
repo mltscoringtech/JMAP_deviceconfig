@@ -440,11 +440,11 @@ class _HomeScreenState extends State<HomeScreen> {
         stream8.listen((NetworkAddress addr) {
           if ((addr.exists) && (fixedIPs.containsValue(addr.ip))) {
             connectedVSKIPs.add(addr.ip);
+            print(addr.ip);
           }
         });
       }
     });
-    print(connectedVSKIPs.length);
   }
 }
 
