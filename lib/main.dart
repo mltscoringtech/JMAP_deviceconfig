@@ -430,10 +430,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void pingDiscoverNetwork() async {
     connectedVSKIPs.clear();
-
-    await NetworkInfo().getWifiName().then((value) {
-      print('GetWiFiName: $value');
-      if (value!.startsWith('shelly')) {
+    await NetworkInfo().getWifiIP().then((value) {
+      print('GetWiFiIP: $value');
+      if (value!.startsWith('192.168.33')) {
         connectedVSKIPs.add('192.168.33.1');
       } else {
         Map<String, String> fixedIPs = fixedIPLookup();
@@ -447,13 +446,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
   }
-}
-
-Future<String?> _updateWifiName() async {
-  String? _wifiName;
-  _wifiName = await (NetworkInfo().getWifiName());
-  print("JmapWifi wifiName: $_wifiName");
-  return _wifiName;
 }
 
 class LabeledCheckbox extends StatelessWidget {
