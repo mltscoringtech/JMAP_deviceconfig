@@ -243,6 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Text("Signal Light On Time in Milliseconds"),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     width: 250,
