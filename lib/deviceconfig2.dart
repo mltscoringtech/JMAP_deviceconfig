@@ -51,8 +51,8 @@ class _DeviceConfigPage2State extends State<DeviceConfigPage2> {
         ),
         drawer: NavDrawer(),
         body: Container(
-          padding: const EdgeInsets.all(16.0),
-          width: MediaQuery.of(context).size.width * 0.9,
+          padding: const EdgeInsets.all(8.0),
+          width: MediaQuery.of(context).size.width,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -79,8 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text("Home"),
       ),
       body: Container(
-        padding: const EdgeInsets.all(16.0),
-        width: MediaQuery.of(context).size.width * 0.9,
+        padding: const EdgeInsets.all(8.0),
+        width: MediaQuery.of(context).size.width,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
