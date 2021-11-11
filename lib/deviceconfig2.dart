@@ -1,10 +1,11 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_wifi_connect/flutter_wifi_connect.dart';
 import 'package:http/http.dart' as http;
 import 'package:jmap_device_config/routes/routes.dart';
 import 'package:jmap_device_config/widgets/navdrawer.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:wifi_iot/wifi_iot.dart';
 
 import 'controllers/fixedip.dart';
 import 'controllers/styles.dart';
@@ -119,22 +120,14 @@ class _DeviceConfigPage2State extends State<DeviceConfigPage2> {
           height: 56,
           child: Center(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 280,
-                      child: Text(
-                        "${ssidList[index].ssid}",
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                    WiFiIcon(rssi: ssidList[index].rssi ?? 0),
-                  ],
-                ),
-                SizedBox(width: 24),
+                Expanded(
+                    child: AutoSizeText(
+                  "${ssidList[index].ssid}",
+                  maxLines: 1,
+                )),
+                SizedBox(width: 5),
+                WiFiIcon(rssi: ssidList[index].rssi ?? 0),
               ],
             ),
           ),
@@ -170,7 +163,7 @@ class _DeviceConfigPage2State extends State<DeviceConfigPage2> {
     await client.get(Uri.parse(configURL)); // Enable WiFi
     print("SSID: ${ssidList[index].ssid}");
 
-    await wifiConnect(ssidList[index].ssid!, "87654321").then((value) => {
+    await FlutterWifiConnect.connectToSecureNetwork(ssidList[index].ssid, "87654321").then((value) => {
           if (value = true)
             {
               pr.hide(),
@@ -197,12 +190,5 @@ class _DeviceConfigPage2State extends State<DeviceConfigPage2> {
         child: Icon(Icons.refresh_sharp),
       ),
     );
-  }
-
-  wifiConnect(String psSSID, String psKey) async {
-    await WiFiForIoTPlugin.findAndConnect(psSSID, password: psKey, joinOnce: true, withInternet: false).then((value) => {
-          if (value = true) {Navigator.push(context, new MaterialPageRoute(builder: (context) => new DeviceConfigPage2(switchID: psSSID)))}
-        });
-    return true;
   }
 }

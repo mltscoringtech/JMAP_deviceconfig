@@ -60,12 +60,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<String> connectedVSKIPs = [];
-  double _startSignalTime = 1.50;
+  double _startSignalTime = 500;
   double _startDelayTime = 2;
   double _parSignalTime = 8;
   bool _startStopIsTiming = false;
 
-  final _startSignalTimeTextController = TextEditingController()..text = "1.50";
+  final _startSignalTimeTextController = TextEditingController()..text = "500";
   final _startDelayTextController = TextEditingController()..text = "2.00";
   @override
   initState() {
@@ -241,26 +241,26 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 8,
               ),
-              Text("Signal Light On Time in Seconds"),
+              Text("Signal Light On Time in Milliseconds"),
               Row(
                 children: [
                   Container(
-                    width: 400,
+                    width: 250,
                     child: Slider(
                       value: _startSignalTime,
                       label: _startSignalTime.toString(),
-                      min: 0,
-                      max: 5,
+                      min: 100,
+                      max: 3000,
                       onChanged: (double newSliderValue) {
                         setState(() {
                           _startSignalTime = newSliderValue;
-                          _startSignalTimeTextController.text = newSliderValue.toStringAsFixed(2);
+                          _startSignalTimeTextController.text = newSliderValue.toStringAsFixed(0);
                         });
                       },
                     ),
                   ),
                   Container(
-                    width: 65,
+                    width: 85,
                     child: TextField(
                       controller: _startSignalTimeTextController,
                       enabled: false,
@@ -278,40 +278,40 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 8,
               ),
-              Text("Start Signal Delay Time in Seconds"),
-              Row(
-                children: [
-                  Container(
-                    width: 400,
-                    child: Slider(
-                      value: _startDelayTime,
-                      label: _startDelayTime.toString(),
-                      min: 0,
-                      max: 10,
-                      onChanged: (double newSliderValue) {
-                        setState(() {
-                          _startDelayTime = newSliderValue;
-                          _startDelayTextController.text = newSliderValue.toStringAsFixed(0);
-                        });
-                      },
-                    ),
-                  ),
-                  Container(
-                    width: 65,
-                    child: TextField(
-                      controller: _startDelayTextController,
-                      enabled: false,
-                      style: TextStyle(fontSize: 24),
-                      decoration: InputDecoration(
-                        isDense: true,
-                        counterText: '',
-                        border: UnderlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(vertical: 1, horizontal: 6),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // Text("Start Signal Delay Time in Seconds"),
+              // Row(
+              //   children: [
+              //     Container(
+              //       width: 400,
+              //       child: Slider(
+              //         value: _startDelayTime,
+              //         label: _startDelayTime.toString(),
+              //         min: 0,
+              //         max: 10,
+              //         onChanged: (double newSliderValue) {
+              //           setState(() {
+              //             _startDelayTime = newSliderValue;
+              //             _startDelayTextController.text = newSliderValue.toStringAsFixed(0);
+              //           });
+              //         },
+              //       ),
+              //     ),
+              //     Container(
+              //       width: 65,
+              //       child: TextField(
+              //         controller: _startDelayTextController,
+              //         enabled: false,
+              //         style: TextStyle(fontSize: 24),
+              //         decoration: InputDecoration(
+              //           isDense: true,
+              //           counterText: '',
+              //           border: UnderlineInputBorder(),
+              //           contentPadding: EdgeInsets.symmetric(vertical: 1, horizontal: 6),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               SizedBox(
                 height: 12,
               ),
@@ -348,17 +348,6 @@ class _HomeScreenState extends State<HomeScreen> {
     //   print(event);
     // });
 
-    // final stream = NetworkAnalyzer.discover2(
-    //   '192.168.8',
-    //   80,
-    //   timeout: Duration(milliseconds: 500),
-    // );
-    // stream.listen((NetworkAddress addr) {
-    //   if (addr.exists) {
-    //     print('Found device: ${addr.ip}');
-    //   }
-    // });
-
     try {
       //print(".21: ${DateTime.now().millisecond}");
       // int startTime = DateTime.now().millisecond;
@@ -382,26 +371,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
       for (String vskip in connectedVSKIPs) {
         client.get(Uri.parse("http://$vskip/relay/0?turn=on"));
-        Future.delayed(Duration(milliseconds: 300)).then((value) {
+        print("On: ${DateTime.now().millisecond}");
+        Future.delayed(Duration(milliseconds: _startSignalTime.toInt())).then((value) {
           client.get(Uri.parse("http://$vskip/relay/0?turn=off"));
+          print("Off: ${DateTime.now().millisecond}");
         });
       }
 
       // Socket.connect('192.168.8.23', 80, timeout: Duration(milliseconds: 500)).then((socket) {
       //   client.get(Uri.parse("http://192.168.8.23/relay/0?turn=on&timer=$_startSignalTime"));
       // }).catchError((error) {});
-      // Socket.connect('192.168.8.24', 80, timeout: Duration(milliseconds: 500)).then((socket) {
-      //   client.get(Uri.parse("http://192.168.8.24/relay/0?turn=on&timer=$_startSignalTime"));
-      // }).catchError((error) {});
-      // Socket.connect('192.168.8.25', 80, timeout: Duration(milliseconds: 500)).then((socket) {
-      //   client.get(Uri.parse("http://192.168.8.25/relay/0?turn=on&timer=$_startSignalTime"));
-      // }).catchError((error) {});
-      // Socket.connect('192.168.8.26', 80, timeout: Duration(milliseconds: 500)).then((socket) {
-      //   client.get(Uri.parse("http://192.168.8.26/relay/0?turn=on&timer=$_startSignalTime"));
-      // }).catchError((error) {});
-      // Socket.connect('192.168.8.27', 80, timeout: Duration(milliseconds: 500)).then((socket) {
-      //   client.get(Uri.parse("http://192.168.8.27/relay/0?turn=on&timer=$_startSignalTime"));
-      // }).catchError((error) {});
+
     } catch (e) {
       print(e);
     }
@@ -431,7 +411,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void pingDiscoverNetwork() async {
     connectedVSKIPs.clear();
     await NetworkInfo().getWifiIP().then((value) {
-      print('GetWiFiIP: $value');
       if (value!.startsWith('192.168.33')) {
         connectedVSKIPs.add('192.168.33.1');
       } else {

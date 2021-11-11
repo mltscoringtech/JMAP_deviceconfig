@@ -15,6 +15,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.6.1"
+  auto_size_text:
+    dependency: "direct main"
+    description:
+      name: auto_size_text
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -90,13 +97,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_spinkit:
-    dependency: "direct main"
-    description:
-      name: flutter_spinkit
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.0.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -107,6 +107,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_wifi_connect:
+    dependency: "direct main"
+    description:
+      name: flutter_wifi_connect
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.7"
   http:
     dependency: "direct main"
     description:
@@ -309,7 +316,7 @@ packages:
       name: wifi_iot
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.7"
+    version: "0.3.8"
   xml:
     dependency: transitive
     description:
@@ -319,4 +326,4 @@ packages:
     version: "5.1.2"
 sdks:
   dart: ">=2.12.0 <3.0.0"
-  flutter: ">=2.0.0"
+  flutter: ">=1.20.0"

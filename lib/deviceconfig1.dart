@@ -1,12 +1,14 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jmap_device_config/deviceconfig2.dart';
+import 'package:flutter_wifi_connect/flutter_wifi_connect.dart';
 import 'package:jmap_device_config/widgets/navdrawer.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:wifi_iot/wifi_iot.dart';
 
 import 'controllers/fixedip.dart';
 import 'controllers/styles.dart';
+import 'deviceconfig2.dart';
 
 class DeviceConfigPage1 extends StatefulWidget {
   const DeviceConfigPage1({Key? key}) : super(key: key);
@@ -47,7 +49,7 @@ class _DeviceConfigPage1State extends State<DeviceConfigPage1> {
         ),
         drawer: NavDrawer(),
         body: Container(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(5.0),
           width: MediaQuery.of(context).size.width * 0.9,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -66,7 +68,7 @@ class _DeviceConfigPage1State extends State<DeviceConfigPage1> {
               Flexible(
                 child: Container(
                   child: wifiScanList(),
-                  padding: EdgeInsets.all(24),
+                  padding: EdgeInsets.all(5),
                 ),
               ),
             ],
@@ -136,7 +138,11 @@ class _DeviceConfigPage1State extends State<DeviceConfigPage1> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("${_htResultNetwork[index].ssid}"),
+                Expanded(
+                    child: AutoSizeText(
+                  "${_htResultNetwork[index].ssid}",
+                  maxLines: 1,
+                )),
                 SizedBox(width: 24),
                 WiFiIcon(rssi: _htResultNetwork[index].level ?? 0),
               ],
@@ -152,7 +158,7 @@ class _DeviceConfigPage1State extends State<DeviceConfigPage1> {
     pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
     pr.style(message: 'Connecting to switch, please wait...');
     pr.show();
-    await WiFiForIoTPlugin.findAndConnect(psSSID, password: psKey, joinOnce: true, withInternet: false).then((value) => {
+    await FlutterWifiConnect.connect(psSSID).then((value) => {
           if (value = true)
             {
               pr.hide(),
