@@ -1,0 +1,6 @@
+version: "Apple Swift version 5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
+options: "6f29a4504ce0e27ae4af91249cf21b63abf4bad0d59bdc6413e9768e5a34da69"
+build_start_time: [1636732075, 641489028]
+build_end_time: [1636732075, 702178001]
+inputs:
+  "/Users/mikethomas/AndroidStudioProjects/JMAP_deviceconfig/ios/Runner/AppDelegate.swift": !private [1591031725, 760966539]

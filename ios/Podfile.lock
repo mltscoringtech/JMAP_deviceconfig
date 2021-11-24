@@ -1,5 +1,7 @@
 PODS:
   - Flutter (1.0.0)
+  - flutter_wifi_connect (0.0.1):
+    - Flutter
   - network_info_plus (0.0.1):
     - Flutter
   - wifi_iot (0.0.1):
@@ -7,12 +9,15 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - flutter_wifi_connect (from `.symlinks/plugins/flutter_wifi_connect/ios`)
   - network_info_plus (from `.symlinks/plugins/network_info_plus/ios`)
   - wifi_iot (from `.symlinks/plugins/wifi_iot/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  flutter_wifi_connect:
+    :path: ".symlinks/plugins/flutter_wifi_connect/ios"
   network_info_plus:
     :path: ".symlinks/plugins/network_info_plus/ios"
   wifi_iot:
@@ -20,9 +25,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  flutter_wifi_connect: af8fc019b9bc57419f6d85ccf7b783f5de84218d
   network_info_plus: b78876159360f5580608c2cea620d6ceffabd0ad
   wifi_iot: b5aafd6f9b52f8a357383a1deabab45f31cd602d
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: cc1f88378b4bfcf93a6ce00d2c587857c6008d3b
 
 COCOAPODS: 1.9.3
